@@ -2,10 +2,10 @@ import Project from '../models/project.model.js';
 import User from '../models/user.model.js';
 
 export const createProject = async (req, res) => {
-    const { name, description, divisions } = req.body;
+    const { name, customer, deadline, hours, projectValue, content, projectUsers } = req.body;
 
     try {
-        if(!name || !description || !divisions){
+        if(!name || !customer || !deadline || !hours || !projectValue){
             return res.status(401).json({ message: "Not all required fields have been entered"}) 
         }
         
@@ -13,20 +13,23 @@ export const createProject = async (req, res) => {
             return res.status(401).json({ message: "Name of project should be longer than 2 letters and less than 200"})
         }
         
-        if( description > 1000) {
+        if( content > 1000) {
             return res.status(401).json({ message: "Description should be shorter than 1000 characters"});
         }
         
         const newProject = new Project({
             name,
-            description,
-            divisions,
-            user: req.user,
+            customer,
+            deadline,
+            hours,
+            projectValue,
+            content,
+            projectUsers
         });
 
         const savedProject = await newProject.save();
         
-        
+        console.log('utworzono projekt')
         res.status(201).json(savedProject);
 
         
