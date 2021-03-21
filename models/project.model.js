@@ -9,7 +9,8 @@ const projectSchema = mongoose.Schema({
     hours: { type: Number, require: true },
     projectValue: { type: Number, require: true },
     content: { type: String },
-    projectUsers: { type: ObjectId }
+    projectUsers: { type: Array },
+    departments: { type: Array }
 })
 
 const Project = mongoose.model("project", projectSchema);

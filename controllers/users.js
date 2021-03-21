@@ -18,8 +18,6 @@ export const registerUser = async (req, res) => {
             return res.status(401).json({ message: "Surname should be longer than 2 letters and less than 50"})
         }
         if( user.password !== user.replayPassword ){
-            console.log(user.password);
-            console.log(user.replayPassword);
             return res.status(401).json({ message: "Enter the same password twice for verification" })
         }
         if( !user.email || !user.name || !user.surname || !user.password  || !user.replayPassword || !user.user_id){

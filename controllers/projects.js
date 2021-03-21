@@ -2,7 +2,7 @@ import Project from '../models/project.model.js';
 import User from '../models/user.model.js';
 
 export const createProject = async (req, res) => {
-    const { name, customer, deadline, hours, projectValue, content, projectUsers } = req.body;
+    const { name, customer, deadline, hours, projectValue, content, projectUsers, departments } = req.body;
 
     try {
         if(!name || !customer || !deadline || !hours || !projectValue){
@@ -24,7 +24,9 @@ export const createProject = async (req, res) => {
             hours,
             projectValue,
             content,
-            projectUsers
+            projectUsers,
+            departments,
+
         });
 
         const savedProject = await newProject.save();
@@ -40,13 +42,22 @@ export const createProject = async (req, res) => {
 }
 // homepage/user
 export const getProjectsForLoggedInUser = async (req, res) => {
-    try{
-        console.log(req)
-        const projects = await Project.find({ user: req.user });
-        const user = await User.find({ _id: req.user })
-        console.log(user);
+    try{ 
+        //pobieramy projekty wszystkie
+        const projects = await Project.find();
+        const user = await User.find({ _id: req.user });
+        const searchedId = user[0]._id;
+        const amountAllProjects = projects.length;
+        let projectsForLoggedUser = [];
+        
+        // musimy sprawdzic czy zmienna "projectUsers" zawiera id zalogowanego użytkownika
+        for(let i = 0; i < amountAllProjects; i++){
+            if(projects[i].projectUsers.includes(searchedId)){
+                projectsForLoggedUser.push(projects[i]);
+            }
+        }
 
-        res.status(200).json({ projects, user } );
+        res.status(200).json({ projectsForLoggedUser, user });
     } catch (error) {
         res.status(404).json({ message: error.message});
     }
