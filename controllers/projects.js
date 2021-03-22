@@ -13,8 +13,42 @@ export const createProject = async (req, res) => {
             return res.status(401).json({ message: "Name of project should be longer than 2 letters and less than 200"})
         }
         
-        if( content > 1000) {
+        if( content.length > 1000) {
             return res.status(401).json({ message: "Description should be shorter than 1000 characters"});
+        }
+
+        if( hours < 1 ) {
+            return res.status(401).json({ message: "Project should take longer than 1 hour" })
+        }
+
+        if( projectValue < 0){
+            return res.status(401).json({ message: "Estimated project value have to be positive" })
+        }
+
+        if( content.length < 0){
+            return res.status(401).json({ message: "Please add a description of the project" })
+        }
+
+        if( projectUsers === []){
+            return res.status(401).json({ message: "You have to choose someone to carry out the project" })
+        }
+
+        if( departments === []){
+            return res.status(401).json({ message: "You have to choose departments responsbile for the project" })
+        }
+
+        const nowDate = new Date();
+        const deadlineDate = new Date(deadline);
+    
+        if(deadlineDate.getTime() < nowDate.getTime()){
+            return res.status(401).json({ message: "The deadline must be in the future" })
+        }
+
+        const searchedProject = await Project.findOne({ name: name});
+        console.log(searchedProject);
+
+        if (searchedProject) {
+            return res.status(401).json({ message: "Project with this title already exist !"})
         }
         
         const newProject = new Project({
