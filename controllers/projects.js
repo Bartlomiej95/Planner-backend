@@ -91,8 +91,21 @@ export const getProjectsForLoggedInUser = async (req, res) => {
             }
         }
 
-        res.status(200).json({ projectsForLoggedUser, user });
+        res.status(200).json({ projectsForLoggedUser, user, projects });
     } catch (error) {
         res.status(404).json({ message: error.message});
+    }
+}
+
+export const getDetailsProject = async (req, res) => {
+    try {
+        const name = req.params.name;
+        console.log(name);
+        const project = await Project.findOne({ name: name })
+        console.log(project);
+        res.status(200).json({ project });
+
+    } catch (error) {
+        res.status(404).json({ message: error.message })
     }
 }
