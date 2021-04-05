@@ -3,12 +3,8 @@ import Task from "../models/task.model.js";
 
 export const createNewTask = async (req, res) => {
 const { title, brief, guidelines, time, categoryTask, taskUsers, halfTimeReport, projectId, projectName } = req.body;
-console.log(req)
 try {
     if(!title || !guidelines || !time ){
-        console.log(title);
-        console.log(guidelines);
-        console.log(time);
         return res.status(401).json({ message: "Not all required fields have been entered"}) 
     }
     
