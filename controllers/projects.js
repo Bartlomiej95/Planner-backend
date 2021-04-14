@@ -1,4 +1,5 @@
 import Project from '../models/project.model.js';
+import Rate from '../models/rate.model.js';
 import Task from '../models/task.model.js';
 import User from '../models/user.model.js';
 
@@ -76,12 +77,13 @@ export const createProject = async (req, res) => {
 
 }
 // homepage/user
-export const fetchAllTasksAndProjectsForLoggedInUser = async (req, res) => {
+export const fetchAllData = async (req, res) => {
     try{ 
         //pobieramy projekty wszystkie
         const projects = await Project.find();
         const tasks = await Task.find();
         const user = await User.find({ _id: req.user });
+        const rates = await Rate.find();
         const searchedId = user[0]._id;
         const amountAllProjects = projects.length;
         let projectsForLoggedUser = [];
@@ -93,7 +95,7 @@ export const fetchAllTasksAndProjectsForLoggedInUser = async (req, res) => {
             }
         }
         
-        res.status(200).json({ projectsForLoggedUser, user, projects, tasks });
+        res.status(200).json({ projectsForLoggedUser, user, projects, tasks, rates });
     } catch (error) {
         res.status(404).json({ message: error.message});
     }
