@@ -12,6 +12,9 @@ const taskSchema = mongoose.Schema({
     halfTimeReport: { type: Boolean, default: false},
     projectName: { type: String },
     projectId: { type: ObjectId },
+    isFinish: { type: Boolean, default: false },
+    isActive: { type: Boolean, default: false },
+    taskTime: { type: Number, default: 0 },
 })
 
 const Task = mongoose.model("task", taskSchema);
