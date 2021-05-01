@@ -113,3 +113,26 @@ export const getDetailsProject = async (req, res) => {
         res.status(404).json({ message: error.message })
     }
 }
+
+export const editProject = async (req, res) => {  
+    const { id, data } = req.body;
+    const { name, customer, deadline, hours, projectValue, projectUsers, departments, content } = data;
+    try {
+        let searchedProject = await Project.findOneAndUpdate({ _id: id }, { 
+            name,
+            customer,
+            deadline,
+            hours,
+            projectValue,
+            content,
+            projectUsers,
+            departments,
+        });
+        searchedProject = await Project.findOne({ _id: id });
+        console.log(searchedProject);
+
+        res.status(200).json({ searchedProject });
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}

@@ -14,7 +14,7 @@ const taskSchema = mongoose.Schema({
     projectId: { type: ObjectId },
     isFinish: { type: Boolean, default: false },
     isActive: { type: Boolean, default: false },
-    taskTime: { type: Number, default: 0 },
+    taskTime: { type: Number, default: 0 },  
 })
 
 const Task = mongoose.model("task", taskSchema);
