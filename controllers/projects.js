@@ -4,10 +4,10 @@ import Task from '../models/task.model.js';
 import User from '../models/user.model.js';
 
 export const createProject = async (req, res) => {
-    const { name, customer, deadline, hours, projectValue, content, projectUsers, departments } = req.body;
+    const { name, customer, deadline, hours, projectValue, content, projectUsers, departments, scopeOfWork, assumptions, customerInfo } = req.body;
 
     try {
-        if(!name || !customer || !deadline || !hours || !projectValue){
+        if(!name || !customer || !deadline || !hours || !projectValue || !assumptions || !projectUsers || !departments){
             return res.status(401).json({ message: "Not all required fields have been entered"}) 
         }
         
@@ -62,7 +62,9 @@ export const createProject = async (req, res) => {
             content,
             projectUsers,
             departments,
-
+            assumptions,
+            scopeOfWork,
+            customerInfo,
         });
 
         const savedProject = await newProject.save();

@@ -10,7 +10,10 @@ const projectSchema = mongoose.Schema({
     projectValue: { type: Number, require: true },
     content: { type: String },
     projectUsers: { type: Array },
-    departments: { type: Array }
+    departments: { type: Array },
+    assumptions: { type: String },
+    scopeOfWork: { type: String, require: true },
+    customerInfo: { type: String },
 })
 
 const Project = mongoose.model("project", projectSchema);
