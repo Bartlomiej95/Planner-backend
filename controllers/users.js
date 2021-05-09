@@ -80,29 +80,55 @@ export const loginUsers = async (req, res) => {
     
     try {
         const { email, user_id, password } = req.body;
-      
-        if( !email || !password){
-            return res.status(401).json({ message: "Not all required fields have been entered" })
+
+        if( !email || !password ){
+            //jeżeli brakuje nam maila, to sprawdzamy czy nie zalogował się przez user_id
+            if( !user_id || !password){
+                return res.status(401).json({ message: "Not all required fields have been entered"});
+            }
         }
 
         const searchExistingUser = await User.findOne({ email });
+        const searchUser = await User.findOne({ user_id });
+        let searchedId;
+        let searchedUser;
 
-        if(!searchExistingUser){
+        if(searchExistingUser || searchUser){
+            if(searchExistingUser){
+                searchedId = searchExistingUser._id;
+                searchedUser = searchExistingUser;
+            } else if( searchUser ){
+                searchedId = searchUser._id;
+                searchedUser = searchUser;
+            }
+        }
+        console.log(searchExistingUser);
+ 
+
+        if(!searchedUser){
             return res.status(401).json({ message: "User doesn't exist"});
         }
 
         const passwordCorrect = await bcrypt.compare(
             password,
-            searchExistingUser.password
+            searchedUser.password
         )
 
         if(!passwordCorrect){
             return res.status(401).json({ message: "Invalid credentials"})
         }
 
+        // const token = jwt.sign({
+        //     id: searchExistingUser._id,
+        //     searchExistingUser
+        //     },
+        //     process.env.JWT_SECRET,
+        //     { expiresIn: "1h" }
+        // );
+
         const token = jwt.sign({
-            id: searchExistingUser._id,
-            searchExistingUser
+            id: searchedId,
+            searchedUser
             },
             process.env.JWT_SECRET,
             { expiresIn: "1h" }
