@@ -4,7 +4,7 @@ import Task from '../models/task.model.js';
 import User from '../models/user.model.js';
 
 export const createProject = async (req, res) => {
-    const { name, customer, deadline, hours, projectValue, content, projectUsers, departments, scopeOfWork, assumptions, customerInfo } = req.body;
+    const { name, customer, deadline, hours, projectValue, content, projectUsers, departments, scopeOfWork, assumptions, customerInfo, projectTasks } = req.body;
 
     try {
         if(!name || !customer || !deadline || !hours || !projectValue || !assumptions || !projectUsers || !departments){
@@ -65,6 +65,7 @@ export const createProject = async (req, res) => {
             assumptions,
             scopeOfWork,
             customerInfo,
+            projectTasks,
         });
 
         const savedProject = await newProject.save();
@@ -134,6 +135,32 @@ export const editProject = async (req, res) => {
         console.log(searchedProject);
 
         res.status(200).json({ searchedProject });
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+export const addTaskToProject = async (req, res) => {
+    console.log(req);
+    const { idProject, task } = req.body;
+    try {
+        // const project = await Project.findOneAndUpdate({ _id: idProject}, {
+        //     projectTasks = [...project.projectTasks, task],
+        // });
+        const searchedProject = await Project.findOne({ _id: idProject});
+        const tasks = await Task.find();
+        
+        
+        
+        if(searchedProject){
+            console.log(tasks);
+            const lengthOfArrayTasks = tasks.length;
+            searchedProject.projectTasks.push(tasks[lengthOfArrayTasks - 1]._id);
+            searchedProject.save();
+        }
+
+        res.status(200).json({ searchedProject });       
+
     } catch (error) {
         res.status(404).json({ message: error.message });
     }

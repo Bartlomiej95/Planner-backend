@@ -14,6 +14,7 @@ const projectSchema = mongoose.Schema({
     assumptions: { type: String },
     scopeOfWork: { type: String, require: true },
     customerInfo: { type: String },
+    projectTasks: { type: Array, default: [] },
 })
 
 const Project = mongoose.model("project", projectSchema);
