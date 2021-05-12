@@ -48,3 +48,28 @@ try {
         res.status(401).json({ message: error.message})
     }
 }
+
+export const updateTask = async (req, res) => {
+    const { id, time, isFinish, addedTime } = req.body;
+    
+    try {
+        if(!addedTime){
+            let searchedTask = await Task.findOneAndUpdate({ _id: id }, { 
+                isFinish, 
+            });
+            searchedTask = await Task.findOne({ _id: id });
+
+            res.status(200).json({ searchedTask });
+        } else {
+            let searchedTask = await Task.findOneAndUpdate({ _id: id }, { 
+                taskTime: addedTime + time,
+            });
+    
+            searchedTask = await Task.findOne({ _id: id });
+    
+            res.status(200).json({ searchedTask });
+        }
+    } catch (error) {
+        res.status(401).json({ message: error.message})
+    }
+}
