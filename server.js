@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import homepageRouter from './routes/homepage/homepage.js';
 import userRouter from './routes/homepage/user/user.js';
 import projectRouter from './routes/homepage/project/project.js';
+import messageRouter from './routes/homepage/message/message.js';
 
 dotenv.config()
 
@@ -33,6 +34,7 @@ mongoose.set('useFindAndModify', false);
 app.use('/homepage', homepageRouter);
 app.use('/homepage/user', userRouter);
 app.use('/homepage/project', projectRouter);
+app.use('/homepage/message', messageRouter);
 
 
 
