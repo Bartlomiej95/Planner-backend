@@ -1,15 +1,13 @@
 import mongoose from 'mongoose';
 
-const ObjectId = mongoose.Schema.Types.ObjectId;
-
 const messageSchema = mongoose.Schema({
     title: { type: String, require: true },
     recipient: { type: String, require: true},
-    recipientId: { type: ObjectId, require: true},
     content: { type: String },
     sender: { type: String },
+    rear: { type: Boolean },
 })
 
-const Message = mongoose.model("project", messageSchema);
+const Message = mongoose.model("message", messageSchema);
 
 export default Message;
