@@ -5,7 +5,7 @@ export const showAllMessages = async (req, res) => {
     try {
         // chcemy pobrac maile, które jako odbiorcę będą miały maila użytkownika
         // interesują nas maile konkretnego użytkownika
-        const messages = await Message.find({ recipient: req.body.user_email});
+        const messages = await Message.find({ recipient: req.query.email});
         
         res.status(200).json({ messages });
 
@@ -16,7 +16,6 @@ export const showAllMessages = async (req, res) => {
 
 export const createNewMessage = async (req, res) => {
     const { title, recipient, content, sender  } = req.body;
-    console.log(req);
     
     try {
         if( !title || !recipient || !sender){
@@ -26,10 +25,13 @@ export const createNewMessage = async (req, res) => {
         if( title.length > 200) {
             return res.status(201).json({ message: "Title can't be longer than 200 characters"})
         }
+
+        let arrayOfRecipients = recipient.split(';');
+        arrayOfRecipients.map(item => item.replace(/ /g, ''));
         
         const newMessage = new Message({
             title, 
-            recipient,
+            recipient: arrayOfRecipients,
             content,
             sender,
             read: true,
